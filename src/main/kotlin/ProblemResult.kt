@@ -5,16 +5,16 @@ data class ProblemResult(
     val weightLimit: Int,
     val weight: Int,
     val value: Int,
-    val algorithm: Algorithm,
+    val algorithmType: Algorithm.AlgorithmType,
     val inputFileName: String
 ) {
     val time = timeMillis.milliseconds.toString()
 
     override fun toString(): String {
         return """
-            time: $time (${timeMillis}ms) | weightLimit: $weightLimit | weight: $weight | value: $value | algorithm: $algorithm | input file: $inputFileName
+            time: $time (${timeMillis}ms) | weightLimit: $weightLimit | weight: $weight | value: $value | algorithm: $algorithmType | input file: $inputFileName
         """.trimIndent()
     }
 
-    fun asCsvLine() = "${inputFileName.replace(",", "_")},$algorithm,$timeMillis,$weightLimit,$weight,$value"
+    fun asCsvLine() = "${inputFileName.replace(",", "_")},$algorithmType,$timeMillis,$weightLimit,$weight,$value"
 }

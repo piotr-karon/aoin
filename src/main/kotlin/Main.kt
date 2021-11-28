@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
     val parser = ArgParser("aoin")
 
     val algorithm by parser.option(
-        ArgType.Choice<Algorithm>(),
+        ArgType.Choice<Algorithm.AlgorithmType>(),
         shortName = "a",
         description = "Algorithm: ref - reference, gen - genetic"
     ).required()
@@ -43,7 +43,7 @@ fun main(args: Array<String>) {
         val results = problems.map {
             println("Solving problems using $algorithm algorithm")
 
-            object : ProblemSolver {}.solve(it).also { println("Resolved. Result: \n$it") }
+            object : ProblemSolver {}.solve(it, algorithm).also { println("Resolved. Result: \n$it") }
         }
 
         ResultSaver.save(results, outputDir, output)
