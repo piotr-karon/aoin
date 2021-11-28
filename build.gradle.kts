@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "1.6.0"
     application
+
+    id("com.google.cloud.tools.jib") version "3.1.4"
 }
 
 group = "aoin.wit.kar"
@@ -36,4 +38,14 @@ tasks.withType<KotlinCompile>() {
 
 application {
     mainClass.set("MainKt")
+}
+
+jib {
+    to {
+        image = "pkaron/aoin"
+        this.tags = setOf("latest")
+    }
+    from {
+        image = "eclipse-temurin:17.0.1_12-jdk-alpine"
+    }
 }
