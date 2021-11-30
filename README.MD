@@ -49,3 +49,9 @@ E.g.:
 dataset1.csv,REF,63234,30,29,120
 dataset2.csv,REF,12234,10,7,10
 ```
+
+# How to run in IntelliJ (skipping Docker)
+
+Use run configuration from `.run/MainKt.run.xml`.
+
+Otherwise, you need to pass parameters `-i "./data" -od "./output" -d -a <algorithm>` in run configuration.
