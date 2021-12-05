@@ -8,11 +8,18 @@ data class ProblemResult(
     val algorithmType: Algorithm.AlgorithmType,
     val inputFileName: String
 ) {
-    val time = timeMillis.milliseconds.toString()
+    private val time = timeMillis.milliseconds.toString()
 
     override fun toString(): String {
         return """
-            time: $time (${timeMillis}ms) | weightLimit: $weightLimit | weight: $weight | value: $value | algorithm: $algorithmType | input file: $inputFileName
+            -----------------------------
+            Algorithm: $algorithmType
+            Time: $time (${timeMillis}ms)
+            Knapsack weight: $weightLimit
+            Result weight: $weight
+            Result value: $value
+            Input file: $inputFileName
+            -----------------------------
         """.trimIndent()
     }
 
