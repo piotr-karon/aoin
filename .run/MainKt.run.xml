@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
-    <option name="MAIN_CLASS_NAME" value="MainKt" />
+    <option name="MAIN_CLASS_NAME" value="app.MainKt" />
     <module name="aoin.main" />
     <option name="PROGRAM_PARAMETERS" value="-i &quot;./data&quot; -od &quot;./output&quot; -a ref -d" />
     <shortenClasspath name="NONE" />

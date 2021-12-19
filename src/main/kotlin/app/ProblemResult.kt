@@ -1,3 +1,6 @@
+package app
+
+import algorithm.base.Algorithm
 import kotlin.time.Duration.Companion.milliseconds
 
 data class ProblemResult(

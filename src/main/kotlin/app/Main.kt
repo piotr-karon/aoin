@@ -1,3 +1,7 @@
+package app
+
+import algorithm.base.Algorithm
+import algorithm.base.ProblemSolver
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
@@ -40,10 +44,10 @@ fun main(args: Array<String>) {
         val problems = DataLoader.load(input)
         println("Loaded ${problems.size} problem instances")
 
-        val results = problems.map {
+        val results = problems.map { problem ->
             println("Solving problems using $algorithm algorithm")
 
-            object : ProblemSolver {}.solve(it, algorithm).also { println("Resolved. Result: \n$it") }
+            object : ProblemSolver {}.solve(problem, algorithm).also { println("Resolved. Result: \n$it") }
         }
 
         ResultSaver.save(results, outputDir, output)

@@ -1,3 +1,7 @@
+package app
+
+import requirePositiveInt
+
 data class Item(
     val name: String,
     val weight: Int,
@@ -5,7 +9,7 @@ data class Item(
     val number: Int
 ) {
     init {
-        require(name.isNotBlank()) { "Name must not be blank. Item number: $number" }
+        require(name.isNotBlank()) { "Name must not be blank. app.Item number: $number" }
         requirePositiveInt(value, "Value", number)
         requirePositiveInt(weight, "Weight", number)
     }
