@@ -1,7 +1,9 @@
 package app
 
 import algorithm.base.Algorithm
+import algorithm.base.AlgorithmDetails
 import algorithm.base.ProblemSolver
+import algorithm.genetic.GeneticAlgorithmParameters
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
@@ -47,7 +49,12 @@ fun main(args: Array<String>) {
         val results = problems.map { problem ->
             println("Solving problems using $algorithm algorithm")
 
-            object : ProblemSolver {}.solve(problem, algorithm).also { println("Resolved. Result: \n$it") }
+            val details = when(algorithm){
+                Algorithm.AlgorithmType.REF -> AlgorithmDetails.DynamicProgramming
+                Algorithm.AlgorithmType.GEN -> AlgorithmDetails.Genetic(GeneticAlgorithmParameters())
+            }
+
+            ProblemSolver.solve(problem, details).also { println("Resolved. Result: \n$it") }
         }
 
         ResultSaver.save(results, outputDir, output)

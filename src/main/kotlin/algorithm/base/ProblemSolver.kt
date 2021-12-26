@@ -2,14 +2,27 @@ package algorithm.base
 
 import algorithm.genetic.GeneticAlgorithmSolver
 import algorithm.dynamic.ReferenceAlgorithmSolver
+import algorithm.genetic.GeneticAlgorithmParameters
 import app.Problem
 import app.ProblemResult
 
-interface ProblemSolver {
+object ProblemSolver {
 
-    fun solve(problem: Problem, algorithmType: Algorithm.AlgorithmType): ProblemResult =
-        when (algorithmType) {
-            Algorithm.AlgorithmType.REF -> ReferenceAlgorithmSolver.solve(problem)
-            Algorithm.AlgorithmType.GEN -> GeneticAlgorithmSolver.solve(problem)
+    fun solve(problem: Problem, algorithmDetails: AlgorithmDetails): ProblemResult =
+        when (algorithmDetails) {
+            is AlgorithmDetails.DynamicProgramming -> ReferenceAlgorithmSolver.solve(problem)
+            is AlgorithmDetails.Genetic -> GeneticAlgorithmSolver(algorithmDetails.parameters).solve(problem)
         }
+
+}
+
+sealed interface AlgorithmDetails {
+
+
+    object DynamicProgramming: AlgorithmDetails
+
+    data class Genetic(
+        val parameters: GeneticAlgorithmParameters
+    ): AlgorithmDetails
+
 }

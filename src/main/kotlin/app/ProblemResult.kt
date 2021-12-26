@@ -18,7 +18,7 @@ data class ProblemResult(
             -----------------------------
             Algorithm: $algorithmType
             Time: $time (${timeMillis}ms)
-            Knapsack weight: $weightLimit
+            Knapsack weight limit: $weightLimit
             Result weight: $weight
             Result value: $value
             Input file: $inputFileName
