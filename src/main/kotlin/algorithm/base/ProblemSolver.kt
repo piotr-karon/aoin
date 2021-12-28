@@ -18,11 +18,16 @@ object ProblemSolver {
 
 sealed interface AlgorithmDetails {
 
+    val type: String
 
-    object DynamicProgramming: AlgorithmDetails
+    object DynamicProgramming: AlgorithmDetails {
+        override val type = "Dynamic Programming"
+    }
 
     data class Genetic(
         val parameters: GeneticAlgorithmParameters
-    ): AlgorithmDetails
+    ): AlgorithmDetails {
+        override val type = "Genetic"
+    }
 
 }

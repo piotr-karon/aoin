@@ -14,20 +14,42 @@ Where:
 * `<output>` – directory into which results files will be saved
 * `<params>` – program parameters. See section below.
 
-Example: running from inside this repository: `docker run -v "$(pwd)/data:/input" -v "$(pwd)/output:/output" pkaron/aoin:latest -a ref`
+Example: running from inside this repository: `docker run -v "$(pwd)/data:/input" -v "$(pwd)/output:/output" pkaron/aoin:latest reference`
 
 # Program parameters
 
 ```
+Usage: aoin options_list
+Subcommands: 
+    reference - Run reference algorithm - dynamic programming
+    genetic - Run genetic algorithm
+
 Options: 
-    --algorithm, -a -> Algorithm: ref - reference, gen - genetic (always required) { Value should be one of [ref, gen] }
+    --help, -h -> Usage info 
+```
+
+Run `aoin <subcommand> --help` to see available parameters for each algorithm.
+
+### Genetic algorithm parameters
+
+```text
+Options: 
+    --input, -i [/input] -> Input directory path. Don't use while using docker version { String }
+    --outputDir, -od [/output] -> Output directory path. Don't use while using docker version { String }
     --output, -o -> Output file name { String }
+    --numOfGenerations [100] { Int }
+    --genesisPopulationSize [20] { Int }
+    --tournamentSize [5] { Int }
+    --numberOfParentsForCrossover [2] { Int }
+    --mutationRate [0.05] { Double }
     --help, -h -> Usage info 
 ```
 
 # Dataset format
 
 The program accepts a csv file containing description of single problem instance:
+
+CSV (file must have `.csv` extension):
 ```text
 30,,            # Weight limit followed by two commas
 Lampa,2,40      # List of items: name,weight,value
@@ -35,6 +57,16 @@ Ksiazka,2,160
 Blender,3,70
 Kubek,1,1
 Krzeslo,1,1
+```
+
+or generic (file without extension):
+```text
+5 80     # Header: Number of items <space> Weight limit
+33 15    # Item: Value <space> Weight
+24 20
+36 17
+37 8
+12 31
 ```
 
 # Output format
@@ -54,4 +86,4 @@ dataset2.csv,REF,12234,10,7,10
 
 Use run configuration from `.run/MainKt.run.xml`.
 
-Otherwise, you need to pass parameters `-i "./data" -od "./output" -d -a <algorithm>` in run configuration.
+Otherwise, you need to pass parameters `-i "./data" -od "./output" <algorithm>` in run configuration.
