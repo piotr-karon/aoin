@@ -10,7 +10,7 @@ import algorithm.genetic.selector.PopulationSelector
 import algorithm.genetic.selector.TournamentSelector
 
 data class GeneticAlgorithmParameters(
-    val numberOfGenerations: Int = 10,
+    val numberOfGenerations: Int = 1000,
     val genesisPopulationGenerator: GenesisPopulationGenerator = RandomGenesisPopulationGenerator(230),
     val selector: PopulationSelector = TournamentSelector(5, 2),
     val crossover: Crossover = ScoreBasedCrossover,
