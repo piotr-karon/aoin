@@ -12,7 +12,6 @@ import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
 import kotlinx.cli.Subcommand
 import kotlinx.cli.default
-import kotlinx.cli.required
 import java.lang.Exception
 
 private var enableDebug = true
@@ -29,6 +28,7 @@ fun main(args: Array<String>) {
     parser.parse(args)
 }
 
+@OptIn(ExperimentalCli::class)
 abstract class AlgorithmSubcommand(
     name: String,
     description: String
@@ -49,7 +49,7 @@ abstract class AlgorithmSubcommand(
         description = "Output directory path. Don't use while using docker version"
     ).default("/output")
 
-    val output by option(ArgType.String, shortName = "o", description = "Output file name")
+    private val output by option(ArgType.String, shortName = "o", description = "Output file name")
 
     override fun execute() {
         try {
@@ -58,10 +58,9 @@ abstract class AlgorithmSubcommand(
 
             val results = problems.map { problem ->
 
-                val details = AlgorithmDetails.DynamicProgramming
-                println("Solving problems using ${details.type} algorithm")
+                println("Solving problems using ${algorithmDetails.type} algorithm")
 
-                ProblemSolver.solve(problem, details).also { println("Resolved. Result: \n$it") }
+                ProblemSolver.solve(problem, algorithmDetails).also { println("Resolved. Result: \n$it") }
             }
 
             ResultSaver.save(results, outputDir, output)
