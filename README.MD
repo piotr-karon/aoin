@@ -94,7 +94,7 @@ Mainframe of the algorithm:
 1. Create input genes pool from items
 2. Generate genesis population
 3. Evolve population
-4. Repeat 3. specified number of times
+4. Repeat 3. specified number of times (generations)
 
 ## Genesis population generator
 
@@ -102,7 +102,35 @@ Genesis population is based on provided required population size. A loop is run 
 times. Each time genes list is randomized and each element is attempted to be put into backpack
 (chromosome). Each chromosome is added to the population.
 
+Available parameters to change:
+- size of genesis population.
+
 ## Evolution
 
 Evolution is based on these steps:
-1. Initialize new
+1. Initialize new generation (population).
+2. Select parents for crossover from initial population.
+3. Crossover parents and generate child.
+4. Mutate child.
+5. Add child to new generation.
+6. Repeat 2-5 population size times.
+
+## Selection
+
+Tournament selection is used. 
+
+Available parameters to change:
+- tournament size.
+
+## Crossover
+
+On point crossover is used. Current implementation returns single child.
+It might be optimized to return two of them.
+
+## Mutation
+
+Mutation occurs with specified probability. It can occur for each gene.
+If it does then that gene is replaced with one random one from pool.
+
+Available parameters to change:
+- mutation probability.

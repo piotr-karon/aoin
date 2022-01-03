@@ -7,15 +7,25 @@ object ScoreBasedCrossover : Crossover {
     override fun crossover(parents: Pair<Chromosome, Chromosome>): Chromosome {
         val (parent1, parent2) = parents
 
-        val (child, parent) =
-            if (parent1.fitnessScore > parent2.fitnessScore) parent1.copy() to parent2
-            else parent2.copy() to parent1
+        val child = Chromosome(parent1.weightLimit)
 
-        repeat(child.size / 2) {
-            val itemFromParent = (0 until parent.size).random()
-            val itemToReplaceInChild = (0 until child.size).random()
+        val point = (0 until parent1.size).random()
 
-            child.tryReplaceAt(itemToReplaceInChild, parent[itemFromParent])
+        val fromParent1 = parent1.take(point)
+
+        val toDrop = parent1.size - point
+        val fromParent2 = parent2.drop(toDrop)
+
+        fromParent1.forEach {
+            child.tryToAdd(it)
+        }
+
+        fromParent2.forEach {
+            child.tryToAdd(it)
+        }
+
+        parent1.forEach {
+            child.tryToAdd(it)
         }
 
         return child

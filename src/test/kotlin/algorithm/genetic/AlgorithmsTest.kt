@@ -14,7 +14,7 @@ internal class AlgorithmsTest {
             GeneticAlgorithmSolver(
                 GeneticAlgorithmParameters(
                     mutator = RandomMutator(0.3),
-                    numberOfGenerations = 1000
+                    numberOfGenerations = 100
                 )
             ).solve(it.problem) to it.optimum
         }
