@@ -13,15 +13,10 @@ class RandomGenesisPopulationGenerator(private val populationSize: Int) : Genesi
         repeat(populationSize) {
             val backpack = Chromosome(weightLimit)
 
-            val tempGenes: MutableList<Gene?> = genes.toMutableList()
-            repeat(Random.nextInt(genes.size)) {
-                val randomIdx = Random.nextInt(genes.size)
-                val gene = tempGenes[randomIdx]
-                tempGenes[randomIdx] = null
+            val randomizedGenes: List<Gene> = genes.shuffled()
 
-                gene?.let {
-                    backpack += it
-                }
+            randomizedGenes.forEach {
+                backpack.tryToAdd(it)
             }
 
             generation += backpack

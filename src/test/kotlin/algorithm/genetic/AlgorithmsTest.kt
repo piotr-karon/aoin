@@ -1,6 +1,5 @@
 package algorithm.genetic
 
-import algorithm.base.AlgorithmDetails
 import algorithm.dynamic.ReferenceAlgorithmSolver
 import algorithm.genetic.mutator.RandomMutator
 import app.Item
@@ -10,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class AlgorithmsTest {
 
     @Test
-    fun `should find pretty near optimum using genetic alg`() {
+    fun `should find result pretty near optimum using genetic alg`() {
         val results = instances.map {
             GeneticAlgorithmSolver(
                 GeneticAlgorithmParameters(

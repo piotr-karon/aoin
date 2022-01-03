@@ -24,10 +24,13 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
 
     override fun iterator(): Iterator<Gene> = genes.iterator()
 
-    operator fun plusAssign(gene: Gene) {
+    fun tryToAdd(gene: Gene): Boolean {
         if(gene !in this && geneFits(gene)){
             genes += gene
+            return true
         }
+
+        return false
     }
 
     fun copy(): Chromosome {

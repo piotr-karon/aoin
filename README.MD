@@ -87,3 +87,22 @@ dataset2.csv,REF,12234,10,7,10
 Use run configuration from `.run/MainKt.run.xml`.
 
 Otherwise, you need to pass parameters `-i "./data" -od "./output" <algorithm>` in run configuration.
+
+# Genetic Algorithm description
+
+Mainframe of the algorithm:
+1. Create input genes pool from items
+2. Generate genesis population
+3. Evolve population
+4. Repeat 3. specified number of times
+
+## Genesis population generator
+
+Genesis population is based on provided required population size. A loop is run that number
+times. Each time genes list is randomized and each element is attempted to be put into backpack
+(chromosome). Each chromosome is added to the population.
+
+## Evolution
+
+Evolution is based on these steps:
+1. Initialize new
