@@ -23,6 +23,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$jacksonVersion")
 
+    implementation("org.slf4j:slf4j-api:1.7.33")
+    implementation("com.michael-bull.kotlin-inline-logger:kotlin-inline-logger:1.0.4")
+
     implementation("org.jetbrains.kotlinx:kotlinx-cli-jvm:0.3.3")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.6.0")

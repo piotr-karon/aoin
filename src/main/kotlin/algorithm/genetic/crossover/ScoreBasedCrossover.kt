@@ -4,31 +4,29 @@ import algorithm.genetic.Chromosome
 
 object ScoreBasedCrossover : Crossover {
 
-    override fun crossover(parents: Pair<Chromosome, Chromosome>): Chromosome {
+    override fun crossover(parents: Pair<Chromosome, Chromosome>): Pair<Chromosome, Chromosome> {
         val (parent1, parent2) = parents
 
-        val child = Chromosome(parent1.weightLimit)
+        val child1 = Chromosome(parent1.weightLimit)
+        val child2 = Chromosome(parent2.weightLimit)
 
-        val point = (0 until parent1.size).random()
+        val cutPoint = (0 until minOf(parent1.size, parent2.size)).random()
 
-        val fromParent1 = parent1.take(point)
+        val firstHalfOfFirstParent = parent1.take(cutPoint)
+        val secondHalfOfFirstParent  = parent1.take(parent1.size - cutPoint)
 
-        val toDrop = parent1.size - point
-        val fromParent2 = parent2.drop(toDrop)
+        val firstHalfOfSecondParent = parent2.drop(cutPoint)
+        val secondHalfOfSecondParent = parent2.drop(parent2.size - cutPoint)
 
-        fromParent1.forEach {
-            child.tryToAdd(it)
-        }
+        firstHalfOfFirstParent.forEach { child1.tryToAdd(it) }
+        secondHalfOfSecondParent.forEach { child1.tryToAdd(it) }
+        parent1.forEach { child1.tryToAdd(it) }
 
-        fromParent2.forEach {
-            child.tryToAdd(it)
-        }
+        firstHalfOfSecondParent.forEach { child2.tryToAdd(it) }
+        secondHalfOfFirstParent.forEach { child2.tryToAdd(it) }
+        parent2.forEach { child2.tryToAdd(it) }
 
-        parent1.forEach {
-            child.tryToAdd(it)
-        }
-
-        return child
+        return child1 to child2
     }
 
 }

@@ -2,7 +2,7 @@
   <configuration default="false" name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="app.MainKt" />
     <module name="aoin.main" />
-    <option name="PROGRAM_PARAMETERS" value="genetic -i &quot;./data&quot; -od &quot;./output&quot;" />
+    <option name="PROGRAM_PARAMETERS" value="genetic -i &quot;./data&quot; -od &quot;./output&quot; --genesisPopulationSize 50 --numberOfGenerations 800 --mutationRate 0.1" />
     <shortenClasspath name="NONE" />
     <method v="2">
       <option name="Make" enabled="true" />

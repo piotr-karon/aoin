@@ -4,6 +4,6 @@ import algorithm.genetic.Chromosome
 
 interface Crossover {
 
-    fun crossover(parents: Pair<Chromosome, Chromosome>): Chromosome
+    fun crossover(parents: Pair<Chromosome, Chromosome>): Pair<Chromosome, Chromosome>
 
 }

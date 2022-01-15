@@ -64,9 +64,6 @@ class Population: Iterable<Chromosome> {
     val randomFittest: Chromosome
     get()  {
         val randomIndex = (size/2 until size).random()
-//        var chromosome: Chromosome? = null
-//        forEachIndexed { index, chromo -> if(index == randomIndex) chromosome = chromo }
-
         return asSequence()
             .filterIndexed { index, _ -> index == randomIndex }
             .first()

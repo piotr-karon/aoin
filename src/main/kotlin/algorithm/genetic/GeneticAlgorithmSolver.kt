@@ -4,11 +4,13 @@ import algorithm.base.Algorithm
 import algorithm.genetic.selector.PopulationSelector
 import app.Problem
 import app.ProblemResult
+import com.github.michaelbull.logging.InlineLogger
 import kotlin.system.measureTimeMillis
 
 class GeneticAlgorithmSolver(
     private val parameters: GeneticAlgorithmParameters,
 ) : Algorithm {
+    private val log = InlineLogger()
 
     private val selector: PopulationSelector = parameters.selector
     private val genesisPopulationGenerator = parameters.genesisPopulationGenerator
@@ -30,6 +32,7 @@ class GeneticAlgorithmSolver(
             repeat(parameters.numberOfGenerations) {
                 population = evolve(population, genes)
                 fittest = population.fittest
+                println("Generation no.: $it. Fittest: ${fittest.value}")
             }
         }
 
@@ -46,16 +49,16 @@ class GeneticAlgorithmSolver(
     private fun evolve(population: Population, genes: List<Gene>): Population {
         val newGeneration = Population()
 
-        repeat(population.size) {
-            val parents =
-                selector.select(population)
+        repeat(population.size / 2) {
+            val parents = selector.select(population)
 
-            val child =
-                crossoverMethod.crossover(Pair(parents[0], parents[1]))
+            val children = crossoverMethod.crossover(Pair(parents[0], parents[1]))
 
-            val mutatedChild = mutator.mutate(child, genes)
+            val mutatedChild1 = mutator.mutate(children.first, genes)
+            val mutatedChild2 = mutator.mutate(children.second, genes)
 
-            newGeneration += mutatedChild
+            newGeneration += mutatedChild1
+            newGeneration += mutatedChild2
         }
 
         return newGeneration
