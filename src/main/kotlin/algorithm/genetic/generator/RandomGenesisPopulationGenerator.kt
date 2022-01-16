@@ -5,7 +5,7 @@ import algorithm.genetic.Gene
 import algorithm.genetic.Population
 import kotlin.random.Random
 
-class RandomGenesisPopulationGenerator(private val populationSize: Int) : GenesisPopulationGenerator {
+class RandomGenesisPopulationGenerator(val populationSize: Int) : GenesisPopulationGenerator {
 
     override fun generate(genes: List<Gene>, weightLimit: Int): Population {
         val generation = Population()

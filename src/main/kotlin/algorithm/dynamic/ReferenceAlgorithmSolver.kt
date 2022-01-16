@@ -18,7 +18,8 @@ object ReferenceAlgorithmSolver : Algorithm {
             weight = result.weight,
             value = result.value,
             algorithmType = Algorithm.AlgorithmType.REF,
-            inputFileName = problem.fileName
+            inputFileName = problem.fileName,
+            expectedOptimum = problem.expectedOptimum
         )
     }
 

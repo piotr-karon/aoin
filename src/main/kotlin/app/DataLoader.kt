@@ -35,7 +35,9 @@ object DataLoader {
         val lines = this.readLines()
         require(lines.isNotEmpty()) { "File is empty" }
 
-        val weightLimit = lines.first().split(" ")[1].toIntOrNull()!!
+        val firstLine = lines.first().split(" ")
+        val weightLimit = firstLine[1].toIntOrNull()!!
+        val expectedOptimum = firstLine.getOrNull(2)?.toIntOrNull()
 
         val items = lines.drop(1).mapIndexed { idx, line ->
             val elements = line.split(" ")
@@ -49,7 +51,8 @@ object DataLoader {
         return Problem(
             weightLimit = weightLimit,
             items = items.toSet(),
-            fileName = this.name
+            fileName = this.name,
+            expectedOptimum = expectedOptimum
         )
 
     }
@@ -58,7 +61,10 @@ object DataLoader {
         val lines = this.readLines()
         require(lines.isNotEmpty()) { "File is empty" }
 
-        val weightStr = requireNotNull(lines.firstOrNull()?.split(",")?.firstOrNull()) { "Weight not present" }
+        val firstLine = lines.firstOrNull()?.split(",")
+        val weightStr = requireNotNull(firstLine?.firstOrNull()) { "Weight not present" }
+        val expectedOptimum = firstLine?.getOrNull(1)?.toIntOrNull()
+
         val weight = requireNotNull(weightStr.toIntOrNull()) { "Couldn't parse weight $weightStr to Int" }
         require(weight > 0) { "Weight must be greater than 0" }
 
@@ -83,7 +89,8 @@ object DataLoader {
         return Problem(
             weightLimit = weight,
             items = items.toSet(),
-            fileName = this.name
+            fileName = this.name,
+            expectedOptimum = expectedOptimum
         )
     }
 }

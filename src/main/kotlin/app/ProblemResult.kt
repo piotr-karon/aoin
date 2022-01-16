@@ -9,7 +9,9 @@ data class ProblemResult(
     val weight: Int,
     val value: Int,
     val algorithmType: Algorithm.AlgorithmType,
-    val inputFileName: String
+    val inputFileName: String,
+    val fittestHist: List<Int>? = null,
+    val expectedOptimum: Int?
 ) {
     private val time = timeMillis.milliseconds.toString()
 
@@ -26,5 +28,8 @@ data class ProblemResult(
         """.trimIndent()
     }
 
-    fun asCsvLine() = "${inputFileName.replace(",", "_")},$algorithmType,$timeMillis,$weightLimit,$weight,$value"
+    fun asCsvLine() = "${inputFileName.replace(",", "_")},$algorithmType,$timeMillis,$weightLimit,$weight,$value,$expectedOptimum,${fittestCsvCompress()}"
+
+    private fun fittestCsvCompress(): String? =
+        fittestHist?.joinToString(separator = ";") { it.toString() }
 }

@@ -22,7 +22,11 @@ class GeneticAlgorithmSolver(
         val genes = problem.items.map { Gene(it.name, it.weight, it.value) }
 
         var fittest: Chromosome
+        var skip = false
 
+        val fittestLimit = 10
+
+        val fittestHist = mutableListOf<Int>()
         val executionTimeMillis = measureTimeMillis {
             var population = genesisPopulationGenerator
                 .generate(genes, problem.weightLimit)
@@ -30,9 +34,21 @@ class GeneticAlgorithmSolver(
             fittest = population.fittest
 
             repeat(parameters.numberOfGenerations) {
-                population = evolve(population, genes)
-                fittest = population.fittest
-//                println("Generation no.: $it. Fittest: ${fittest.value}")
+                if(!skip) {
+                    population = evolve(population, genes)
+                    fittest = population.fittest
+                    fittestHist += fittest.value
+//                    println("Generation no.: $it. Fittest: ${fittest.value}")
+                }
+
+                val lastN = fittestHist.takeLast(fittestLimit)
+                if (lastN.size == fittestLimit) {
+                    val set = lastN.toSet()
+                    if (set.size == 1) {
+                        skip = true
+                    }
+                }
+
             }
         }
 
@@ -42,7 +58,9 @@ class GeneticAlgorithmSolver(
             weight = fittest.weight,
             value = fittest.value,
             algorithmType = Algorithm.AlgorithmType.GEN,
-            inputFileName = problem.fileName
+            inputFileName = problem.fileName,
+            fittestHist = fittestHist,
+            expectedOptimum = problem.expectedOptimum
         )
     }
 

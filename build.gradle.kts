@@ -22,6 +22,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:$jacksonVersion")
+// https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-coroutines-core
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
 
     implementation("org.slf4j:slf4j-api:1.7.33")
     implementation("com.michael-bull.kotlin-inline-logger:kotlin-inline-logger:1.0.4")
