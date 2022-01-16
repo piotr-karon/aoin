@@ -13,7 +13,7 @@ internal class AlgorithmsTest {
         val results = instances.map {
             GeneticAlgorithmSolver(
                 GeneticAlgorithmParameters(
-                    mutator = RandomMutator(0.3),
+                    mutator = RandomMutator(0.1),
                     numberOfGenerations = 100
                 )
             ).solve(it.problem) to it.optimum

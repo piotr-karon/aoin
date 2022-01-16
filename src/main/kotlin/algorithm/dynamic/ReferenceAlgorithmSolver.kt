@@ -10,10 +10,7 @@ import kotlin.system.measureTimeMillis
 
 object ReferenceAlgorithmSolver : Algorithm {
     override fun solve(problem: Problem): ProblemResult {
-        val result = knapsackDynamicProgramming(
-            knapsackWeight = problem.weightLimit,
-            items = problem.items
-        )
+        val result = solve(problem.weightLimit, problem.items)
 
         return ProblemResult(
             timeMillis = result.executionTimeMillis,
@@ -25,56 +22,41 @@ object ReferenceAlgorithmSolver : Algorithm {
         )
     }
 
-    private fun knapsackDynamicProgramming(knapsackWeight: Int, items: Set<Item>): KnapsackResult {
-        var resultValue: Int
-        var resultWeight: Int
+    private fun solve(W: Int, items: Set<Item>): KnapsackResult {
+        val weight = items.map { it.weight }.toTypedArray()
+        val values = items.map { it.value }.toTypedArray()
 
+        var result: Pair<Int, Int>
         val time = measureTimeMillis {
-            val lookupArray = Array(items.size + 1) { Array(knapsackWeight + 1) { j -> 0 } }
-            val weights = items.map { item -> item.weight }
-            val values = items.map { item -> item.value }
-
-            for (i in 0..items.size) {
-                for (j in 0..knapsackWeight) {
-                    if (i == 0 || j == 0)
-                        lookupArray[i][j] = 0
-                    else if (weights[i - 1] <= j)
-                        lookupArray[i][j] =
-                            max(values[i - 1] + lookupArray[i - 1][j - weights[i - 1]], lookupArray[i - 1][j])
-                    else
-                        lookupArray[i][j] = lookupArray[i - 1][j]
-                }
-            }
-
-            resultValue = lookupArray[items.size][knapsackWeight]
-            resultWeight = getKnapsackWeight(lookupArray, weights, values, knapsackWeight)
+            result = solve(W, weight, values)
         }
 
         return KnapsackResult(
-            value = resultValue,
-            weight = resultWeight,
+            value = result.first,
+            weight = result.second,
             executionTimeMillis = time
         )
+
     }
 
-    private fun getKnapsackWeight(
-        dp: Array<Array<Int>>,
-        weights: List<Int>,
-        profits: List<Int>,
-        knapsackWeight: Int
-    ): Int {
-        var knapsackCapacity = knapsackWeight
-        var resultWeight = 0
-        var totalProfit = dp[weights.size - 1][knapsackCapacity]
+    private fun solve(weightLimit: Int, weight: Array<Int>, values: Array<Int>): Pair<Int, Int> {
+        val itemsSize = values.size
 
-        for (i in weights.size - 1 downTo 1) {
-            if (totalProfit != dp[i - 1][knapsackCapacity]) {
-                resultWeight += weights[i]
-                knapsackCapacity -= weights[i]
-                totalProfit -= profits[i]
+        if (weightLimit < 0) return 0 to 0
+        val k = Array(itemsSize + 1) { IntArray(weightLimit + 1) { 0 } }
+        for (i in 0..itemsSize) {
+            for (j in 0..weightLimit) {
+                if (i == 0 || j == 0)
+                    k[i][j] = 0
+                else if (weight[i - 1] <= j)
+                    k[i][j] = max(
+                        a = values[i - 1] + k[i - 1][j - weight[i - 1]],
+                        b = k[i - 1][j]
+                    )
+                else
+                    k[i][j] = k[i - 1][j]
             }
         }
-
-        return resultWeight
+        return k[itemsSize][weightLimit] to weightLimit
     }
 }

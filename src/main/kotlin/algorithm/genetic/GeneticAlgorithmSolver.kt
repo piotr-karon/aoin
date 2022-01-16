@@ -32,7 +32,7 @@ class GeneticAlgorithmSolver(
             repeat(parameters.numberOfGenerations) {
                 population = evolve(population, genes)
                 fittest = population.fittest
-                println("Generation no.: $it. Fittest: ${fittest.value}")
+//                println("Generation no.: $it. Fittest: ${fittest.value}")
             }
         }
 
