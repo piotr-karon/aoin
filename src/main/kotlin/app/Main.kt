@@ -131,8 +131,8 @@ fun runTuning(): Unit  {
                         )
                     )
                 )
+                println("$repeat ${problem.fileName} with input params: $params | time=${res.timeMillis} %opt=${(res.value.toDouble() / (res.expectedOptimum ?: 1) * 100.0).roundToInt()}")
                 ResultSaver.saveTuning(res, params, output, fileName + "$idx$repeat")
-                println("$repeat ${problem.fileName} with input params: $params | time=${res.timeMillis} %opt=${(res.value / (res.expectedOptimum ?: 1) * 100.0).roundToInt()}")
 
 //                    }
             }

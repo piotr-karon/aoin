@@ -7,15 +7,18 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
 
     /** Items in backpack */
     private val genes = arrayListOf<Gene>()
+    private val genesHash = hashSetOf<Gene>()
 
     private fun addGene(gene: Gene) {
         genes.add(gene)
+        genesHash.add(gene)
         value += gene.value
         weight += gene.weight
     }
 
     private fun removeGene(gene: Gene) {
         genes -= gene
+        genesHash.remove(gene)
         value -= gene.value
         weight -= gene.weight
     }
@@ -35,7 +38,7 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
     override fun iterator(): Iterator<Gene> = genes.iterator()
 
     fun tryToAdd(gene: Gene): Boolean {
-        if(gene !in genes && geneFits(gene)){
+        if(gene !in genesHash && geneFits(gene)){
             addGene(gene)
             return true
         }
@@ -50,7 +53,7 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
     }
 
     fun replaceRandom(gene: Gene) {
-        if(gene !in genes) {
+        if(gene !in genesHash) {
             val toRemove = genes.random()
             removeGene(toRemove)
 
