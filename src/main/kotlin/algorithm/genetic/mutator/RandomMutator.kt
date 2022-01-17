@@ -16,7 +16,7 @@ class RandomMutator(
         val newChromosome = child.copy()
 
         indicesToMutate.forEachIndexed { idx, mutate ->
-            if (mutate) newChromosome.tryReplaceAt(idx, genePool.random())
+            if (mutate) newChromosome.replaceRandom(genePool.random())
         }
 
         return newChromosome

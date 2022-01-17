@@ -24,7 +24,7 @@ class TuningRunner {
         val input = "./data"
         val output = "./tuning"
         val fileName = "tuning-${Instant.now()}"
-        val repeats = 5
+        val repeats = 1
 
         val problems = DataLoader.load(input)
         val threads = mutableListOf<Job>()
@@ -33,8 +33,7 @@ class TuningRunner {
             println("${problem.fileName}: items: ${problem.items.size}")
             gen().map { params ->
                 repeat(repeats) { repeat ->
-                    threads += launch {
-                        println("$repeat ${problem.fileName} with input params: $params")
+//                    threads += launch {
                         val res = ProblemSolver.solve(
                             problem,
                             AlgorithmDetails.Genetic(
@@ -50,8 +49,9 @@ class TuningRunner {
                                 )
                             )
                         )
-                        ResultSaver.saveTuning(res, params, output, fileName + "$idx$repeat")
-                    }
+
+                    ResultSaver.saveTuning(res, params, output, fileName + "$idx$repeat")
+//                    }
                 }
             }
             threads.forEach { it.start() }
