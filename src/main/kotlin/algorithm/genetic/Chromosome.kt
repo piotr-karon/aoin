@@ -1,7 +1,5 @@
 package algorithm.genetic
 
-import app.gen
-
 /** This is a Backpack */
 class Chromosome(val weightLimit: Int): Iterable<Gene> {
 
@@ -14,13 +12,10 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
         genesHash.add(gene)
         value += gene.value
         weight += gene.weight
-    }
 
-    private fun removeGene(gene: Gene) {
-        genes -= gene
-        genesHash.remove(gene)
-        value -= gene.value
-        weight -= gene.weight
+        if(weight > weightLimit) {
+            println("################# WeightLimit crossed ##############")
+        }
     }
 
     /** Current number of items in backpack */
@@ -46,22 +41,17 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
         return false
     }
 
-    fun copy(): Chromosome {
-        val copy = Chromosome(weightLimit)
-        genes.forEach { copy.addGene(it) }
-        return copy
-    }
+    fun tryReplaceAt(idx: Int, gene: Gene) {
+        if(gene !in genesHash && geneFits(gene)) {
+            val toRemove = genes[idx]
+            value -= toRemove.value
+            weight -=  toRemove.weight
+            genesHash -= toRemove
 
-    fun replaceRandom(gene: Gene) {
-        if(gene !in genesHash) {
-            val toRemove = genes.random()
-            removeGene(toRemove)
-
-            if(geneFits(gene)){
-                addGene(gene)
-            } else {
-                addGene(toRemove)
-            }
+            genesHash += gene
+            weight += gene.weight
+            value+= gene.value
+            genes[idx] = gene
         }
     }
 

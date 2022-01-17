@@ -20,42 +20,44 @@ import kotlin.math.roundToInt
 class TuningRunner {
 
     @Test
-    fun runTuning(): Unit = runBlocking {
+    fun runTuning(): Unit {
         val input = "./data"
         val output = "./tuning"
         val fileName = "tuning-${Instant.now()}"
-        val repeats = 1
+        val repeats = 3
 
         val problems = DataLoader.load(input)
-        val threads = mutableListOf<Job>()
 
         problems.forEachIndexed { idx, problem ->
-            println("${problem.fileName}: items: ${problem.items.size}")
-            gen().map { params ->
+            gen().mapIndexed { pId, params ->
                 repeat(repeats) { repeat ->
-//                    threads += launch {
-                        val res = ProblemSolver.solve(
-                            problem,
-                            AlgorithmDetails.Genetic(
-                                GeneticAlgorithmParameters(
-                                    numberOfGenerations = params.numberOfGenerations,
-                                    genesisPopulationGenerator =
-                                    RandomGenesisPopulationGenerator(
-                                        populationSize = params.genesisPopulationSize.coerceAtMost((problem.items.size * 0.8).roundToInt())
-                                    ),
-                                    selector = TournamentSelector(params.tournamentSize, 2),
-                                    crossover = ScoreBasedCrossover,
-                                    mutator = RandomMutator(params.mutationRate)
-                                )
+                    val res = ProblemSolver.solve(
+                        problem,
+                        AlgorithmDetails.Genetic(
+                            GeneticAlgorithmParameters(
+                                numberOfGenerations = params.numberOfGenerations,
+                                genesisPopulationGenerator =
+                                RandomGenesisPopulationGenerator(
+                                    populationSize = params.genesisPopulationSize.coerceAtMost((problem.items.size * 0.8).roundToInt())
+                                ),
+                                selector = TournamentSelector(params.tournamentSize, 2),
+                                crossover = ScoreBasedCrossover,
+                                mutator = RandomMutator(params.mutationRate)
                             )
                         )
-
-                    ResultSaver.saveTuning(res, params, output, fileName + "$idx$repeat")
-//                    }
+                    )
+                    ResultSaver.saveTuning(res, params, output, fileName)
+                    println(
+                        "Exec time: ${
+                            String.format(
+                                "%5s",
+                                res.timeMillis.toString()
+                            )
+                        } || ${(res.value.toDouble() / (res.expectedOptimum ?: 1)* 100.0).roundToInt()}% ||${pId}-${repeat} ${problem.fileName}:" +
+                            " items: ${problem.items.size} || $params"
+                    )
                 }
             }
-            threads.forEach { it.start() }
-            threads.forEach { it.join() }
         }
     }
 }
@@ -64,18 +66,22 @@ class TuningRunner {
 // genesis population size depend on size of instance
 // generations depend
 private val mutationRates = listOf(0.05, 0.1)
-private val generationSizes = listOf(50, 100, 150, 200, 250, 300, 400, 500)
-private val genesisSize = listOf(10, 30, 50, 100)
+private val generationSizes = listOf(500)
+private val genesisSize = listOf(100, 200, 300, 400)
+private val tournamentSizes = listOf(2, 5, 10)
 
-fun gen() = mutationRates.flatMap { mutationRates ->
-    generationSizes.flatMap { genNum ->
-        genesisSize.map { genStartSize ->
-            InputParams(
-                numberOfGenerations = genNum,
-                genesisPopulationSize = genStartSize,
-                tournamentSize = 2,
-                mutationRate = mutationRates,
-            )
+fun gen() =
+    mutationRates.flatMap { mutationRates ->
+        generationSizes.flatMap { genNum ->
+            genesisSize.flatMap { genStartSize ->
+                tournamentSizes.map { tSize ->
+                    InputParams(
+                        numberOfGenerations = genNum,
+                        genesisPopulationSize = genStartSize,
+                        tournamentSize = tSize,
+                        mutationRate = mutationRates,
+                    )
+                }
+            }
         }
     }
-}

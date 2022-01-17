@@ -72,7 +72,7 @@ object DataLoader {
             val lineNumber = idx + 1
             val lineElements = line.split(",")
             Item(
-                name = requireNotNull(lineElements.getOrNull(0)) { "Name must not be null. Line $lineNumber" },
+                name = "$idx",
                 weight = requirePositiveInt(
                     requireNotNull(lineElements.getOrNull(1)) { "Weight must not be null" },
                     "Weight",

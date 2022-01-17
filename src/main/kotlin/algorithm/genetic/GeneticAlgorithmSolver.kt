@@ -10,7 +10,6 @@ import kotlin.system.measureTimeMillis
 class GeneticAlgorithmSolver(
     private val parameters: GeneticAlgorithmParameters,
 ) : Algorithm {
-    private val log = InlineLogger()
 
     private val selector: PopulationSelector = parameters.selector
     private val genesisPopulationGenerator = parameters.genesisPopulationGenerator
@@ -24,14 +23,19 @@ class GeneticAlgorithmSolver(
         var fittest: Chromosome
         var skip = false
 
-        val fittestLimit = 10
+        val fittestLimit = 50
 
         val fittestHist = mutableListOf<Int>()
+        var genesisRealSize = 0
+
         val executionTimeMillis = measureTimeMillis {
             var population = genesisPopulationGenerator
                 .generate(genes, problem.weightLimit)
 
+            genesisRealSize = population.size
+
             fittest = population.fittest
+            fittestHist += fittest.value
 
             repeat(parameters.numberOfGenerations) {
                 if(!skip) {
@@ -60,7 +64,8 @@ class GeneticAlgorithmSolver(
             algorithmType = Algorithm.AlgorithmType.GEN,
             inputFileName = problem.fileName,
             fittestHist = fittestHist,
-            expectedOptimum = problem.expectedOptimum
+            expectedOptimum = problem.expectedOptimum,
+            actualGenesisSize = genesisRealSize
         )
     }
 

@@ -13,12 +13,10 @@ class RandomMutator(
                 .map { Random.nextDouble(0.0, 1.0) < mutationRate }
                 .toBooleanArray()
 
-        val newChromosome = child.copy()
-
         indicesToMutate.forEachIndexed { idx, mutate ->
-            if (mutate) newChromosome.replaceRandom(genePool.random())
+            if (mutate) child.tryReplaceAt(idx, genePool.random())
         }
 
-        return newChromosome
+        return child
     }
 }
