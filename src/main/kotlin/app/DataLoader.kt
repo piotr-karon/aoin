@@ -43,8 +43,8 @@ object DataLoader {
             val elements = line.split(" ")
             Item(
                 name = idx.toString(),
-                weight = elements[0].toIntOrNull()!!,
-                value = elements[1].toIntOrNull()!!
+                weight = elements[1].toIntOrNull()!!,
+                value = elements[0].toIntOrNull()!!
             )
         }
 

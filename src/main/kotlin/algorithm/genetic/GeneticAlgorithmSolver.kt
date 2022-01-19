@@ -26,7 +26,7 @@ class GeneticAlgorithmSolver(
         val fittestLimit = 50
 
         val fittestHist = mutableListOf<Int>()
-        var genesisRealSize = 0
+        var genesisRealSize: Int
 
         val executionTimeMillis = measureTimeMillis {
             var population = genesisPopulationGenerator
@@ -55,6 +55,8 @@ class GeneticAlgorithmSolver(
 
             }
         }
+
+        println(fittest.genesList.joinToString(separator = ",") { it.name + ":" + it.weight + ":" + it.value })
 
         return ProblemResult(
             timeMillis = executionTimeMillis,

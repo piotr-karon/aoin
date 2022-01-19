@@ -7,6 +7,8 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
     private val genes = arrayListOf<Gene>()
     private val genesHash = hashSetOf<Gene>()
 
+    val genesList: List<Gene> get() = genes
+
     private fun addGene(gene: Gene) {
         genes.add(gene)
         genesHash.add(gene)

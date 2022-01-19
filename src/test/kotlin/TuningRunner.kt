@@ -24,13 +24,14 @@ class TuningRunner {
         val input = "./data"
         val output = "./tuning"
         val fileName = "tuning-${Instant.now()}"
-        val repeats = 3
+        val repeats = 5
 
         val problems = DataLoader.load(input)
 
-        problems.forEachIndexed { idx, problem ->
-            gen().mapIndexed { pId, params ->
-                repeat(repeats) { repeat ->
+        repeat(repeats) { repeat ->
+            println("#### REPEAT $repeat #######")
+            problems.forEachIndexed { idx, problem ->
+                gen.mapIndexed { pId, params ->
                     val res = ProblemSolver.solve(
                         problem,
                         AlgorithmDetails.Genetic(
@@ -53,7 +54,7 @@ class TuningRunner {
                                 "%5s",
                                 res.timeMillis.toString()
                             )
-                        } || ${(res.value.toDouble() / (res.expectedOptimum ?: 1)* 100.0).roundToInt()}% ||${pId}-${repeat} ${problem.fileName}:" +
+                        } || ${(res.value.toDouble() / (res.expectedOptimum ?: 1) * 100.0).roundToInt()}% ||${pId}-${repeat} ${problem.fileName}:" +
                             " items: ${problem.items.size} || $params"
                     )
                 }
@@ -70,7 +71,7 @@ private val generationSizes = listOf(500)
 private val genesisSize = listOf(100, 200, 300, 400)
 private val tournamentSizes = listOf(2, 5, 10)
 
-fun gen() =
+val gen =
     mutationRates.flatMap { mutationRates ->
         generationSizes.flatMap { genNum ->
             genesisSize.flatMap { genStartSize ->

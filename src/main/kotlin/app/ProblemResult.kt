@@ -23,7 +23,8 @@ data class ProblemResult(
             Time: $time (${timeMillis}ms)
             Knapsack weight limit: $weightLimit
             Result weight: $weight
-            Result value: $value
+            Result value: $value (${expectedOptimum?.let { (value.toDouble() / it * 100.0).toString() + "%" }?:""})
+            Optimum: $expectedOptimum
             Input file: $inputFileName
             -----------------------------
         """.trimIndent()
