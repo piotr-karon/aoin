@@ -5,6 +5,7 @@ import algorithm.genetic.selector.PopulationSelector
 import app.Problem
 import app.ProblemResult
 import com.github.michaelbull.logging.InlineLogger
+import kotlin.math.ceil
 import kotlin.system.measureTimeMillis
 
 class GeneticAlgorithmSolver(
@@ -20,12 +21,12 @@ class GeneticAlgorithmSolver(
 
         val genes = problem.items.map { Gene(it.name, it.weight, it.value) }
 
-        var fittest: Chromosome
+        var fittest: Chromosome?
         var skip = false
 
         val fittestLimit = 50
 
-        val fittestHist = mutableListOf<Int>()
+        val fittestHist = mutableListOf<Int?>()
         var genesisRealSize: Int
 
         val executionTimeMillis = measureTimeMillis {
@@ -35,13 +36,13 @@ class GeneticAlgorithmSolver(
             genesisRealSize = population.size
 
             fittest = population.fittest
-            fittestHist += fittest.value
+            fittestHist += fittest?.value
 
             repeat(parameters.numberOfGenerations) {
                 if(!skip) {
                     population = evolve(population, genes)
                     fittest = population.fittest
-                    fittestHist += fittest.value
+                    fittestHist += fittest?.value
 //                    println("Generation no.: $it. Fittest: ${fittest.value}")
                 }
 
@@ -56,34 +57,37 @@ class GeneticAlgorithmSolver(
             }
         }
 
-        println(fittest.genesList.joinToString(separator = ",") { it.name + ":" + it.weight + ":" + it.value })
+//        println(fittest.genesList.joinToString(separator = ",") { it.name + ":" + it.weight + ":" + it.value })
 
         return ProblemResult(
             timeMillis = executionTimeMillis,
             weightLimit = problem.weightLimit,
-            weight = fittest.weight,
-            value = fittest.value,
+            weight = fittest?.weight ?: 0,
+            value = fittest?.value ?: 0,
             algorithmType = Algorithm.AlgorithmType.GEN,
             inputFileName = problem.fileName,
             fittestHist = fittestHist,
             expectedOptimum = problem.expectedOptimum,
-            actualGenesisSize = genesisRealSize
+            actualGenesisSize = genesisRealSize,
+            geneticParameters = parameters
         )
     }
 
     private fun evolve(population: Population, genes: List<Gene>): Population {
         val newGeneration = Population()
 
-        repeat(population.size / 2) {
+        repeat(ceil(population.size / 2.0).toInt()) {
             val parents = selector.select(population)
 
-            val children = crossoverMethod.crossover(Pair(parents[0], parents[1]))
+            if (parents.size == 2){
+                val children = crossoverMethod.crossover(Pair(parents[0], parents[1]))
 
-            val mutatedChild1 = mutator.mutate(children.first, genes)
-            val mutatedChild2 = mutator.mutate(children.second, genes)
+                val mutatedChild1 = mutator.mutate(children.first, genes)
+                val mutatedChild2 = mutator.mutate(children.second, genes)
 
-            newGeneration += mutatedChild1
-            newGeneration += mutatedChild2
+                newGeneration += mutatedChild1
+                newGeneration += mutatedChild2
+            }
         }
 
         return newGeneration

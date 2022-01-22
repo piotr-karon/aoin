@@ -5,19 +5,23 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
 
     /** Items in backpack */
     private val genes = arrayListOf<Gene>()
-    private val genesHash = hashSetOf<Gene>()
+    private val genesHash = hashMapOf<String, Gene?>()
 
     val genesList: List<Gene> get() = genes
 
     private fun addGene(gene: Gene) {
         genes.add(gene)
-        genesHash.add(gene)
+        genesHash[gene.name] = gene
         value += gene.value
         weight += gene.weight
 
         if(weight > weightLimit) {
             println("################# WeightLimit crossed ##############")
         }
+    }
+
+    private fun isAlreadyAdded(gene: Gene): Boolean {
+        return genesHash[gene.name] != null
     }
 
     /** Current number of items in backpack */
@@ -35,7 +39,7 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
     override fun iterator(): Iterator<Gene> = genes.iterator()
 
     fun tryToAdd(gene: Gene): Boolean {
-        if(gene !in genesHash && geneFits(gene)){
+        if(!isAlreadyAdded(gene) && geneFits(gene)){
             addGene(gene)
             return true
         }
@@ -44,15 +48,16 @@ class Chromosome(val weightLimit: Int): Iterable<Gene> {
     }
 
     fun tryReplaceAt(idx: Int, gene: Gene) {
-        if(gene !in genesHash && geneFits(gene)) {
+        if(!isAlreadyAdded(gene) && geneFits(gene)) {
             val toRemove = genes[idx]
             value -= toRemove.value
             weight -=  toRemove.weight
-            genesHash -= toRemove
+            genesHash[toRemove.name] = null
 
-            genesHash += gene
+            genesHash[gene.name] = gene
             weight += gene.weight
             value+= gene.value
+
             genes[idx] = gene
         }
     }

@@ -5,4 +5,5 @@ import algorithm.genetic.Gene
 
 interface Mutator {
     fun mutate(child: Chromosome, genePool: List<Gene>): Chromosome
+    val mutationRate: Double
 }

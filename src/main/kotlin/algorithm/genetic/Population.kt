@@ -4,12 +4,13 @@ import java.util.*
 
 class Population: Iterable<Chromosome> {
 
-    val randomFittest: Chromosome
-    get()  {
-        val randomIndex = (size/2 until size).random()
+    fun randomFittest(number: Int): List<Chromosome>  {
+        val range = (size/2 until size)
+        val random = (0 until number).map { range.random() }.toSet()
+
         return asSequence()
-            .filterIndexed { index, _ -> index == randomIndex }
-            .first()
+            .filterIndexed { index, _ -> index in random }
+            .toList()
     }
 
     // A set of chromosomes – backpacks. Sorted by its value ascending. The last entry is the bes.
@@ -26,6 +27,10 @@ class Population: Iterable<Chromosome> {
             (k + v).toMutableList()
         }
         size++
+    }
+
+    operator fun plusAssign(chromosomes: List<Chromosome>) {
+        chromosomes.forEach { plusAssign(it) }
     }
 
     override fun iterator(): Iterator<Chromosome> = PopulationIterator()

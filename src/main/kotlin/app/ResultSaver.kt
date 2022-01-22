@@ -9,12 +9,12 @@ import kotlin.io.path.createFile
 
 object ResultSaver {
 
-    fun save(results: List<ProblemResult>, outputPath: String, fileName: String?): File {
+    fun save(results: List<ProblemResult>, outputDirectory: String, fileName: String?): File {
         if (fileName != null) {
             require(fileName.isNotBlank()) { "Output file name cannot be blank." }
         }
 
-        val outputDir = Path(outputPath).apply {
+        val outputDirPath = Path(outputDirectory).apply {
             createDirectories()
         }
 
@@ -23,9 +23,12 @@ object ResultSaver {
         val fileWithExtension = if (nonNullFileName.takeLast(4) == ".csv") nonNullFileName
         else "$nonNullFileName.csv"
 
-        val file = outputDir.resolve(fileWithExtension)
-            .createFile()
+        val file = outputDirPath.resolve(fileWithExtension)
             .toFile()
+
+        if(!file.exists()){
+            file.createNewFile()
+        }
 
         val lines = results
             .joinToString(separator = System.lineSeparator(), transform = ProblemResult::asCsvLine)

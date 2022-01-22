@@ -15,4 +15,7 @@ data class GeneticAlgorithmParameters(
     val selector: PopulationSelector = TournamentSelector(5, 2),
     val crossover: Crossover = ScoreBasedCrossover,
     val mutator: Mutator = RandomMutator(0.05)
-)
+){
+    fun asCsvLine() =
+        "$numberOfGenerations,${genesisPopulationGenerator.populationSize},${selector.size},${mutator.mutationRate}"
+}

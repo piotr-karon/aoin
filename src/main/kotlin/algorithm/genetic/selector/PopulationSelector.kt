@@ -6,4 +6,6 @@ import algorithm.genetic.Population
 interface PopulationSelector {
 
     fun select(population: Population): List<Chromosome>
+
+    val size: Int
 }

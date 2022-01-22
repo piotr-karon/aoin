@@ -5,7 +5,7 @@ import algorithm.genetic.Gene
 import kotlin.random.Random
 
 class RandomMutator(
-    val mutationRate: Double
+   override val mutationRate: Double
 ) : Mutator {
     override fun mutate(child: Chromosome, genePool: List<Gene>): Chromosome {
         val indicesToMutate =

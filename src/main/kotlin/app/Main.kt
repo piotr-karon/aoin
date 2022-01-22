@@ -7,6 +7,7 @@ import algorithm.genetic.crossover.ScoreBasedCrossover
 import algorithm.genetic.generator.RandomGenesisPopulationGenerator
 import algorithm.genetic.mutator.RandomMutator
 import algorithm.genetic.selector.TournamentSelector
+import app.tuning.Tuning
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.ExperimentalCli
@@ -22,10 +23,12 @@ fun debugScope(fn: () -> Unit) {
 
 @OptIn(ExperimentalCli::class)
 fun main(args: Array<String>) {
-    val parser = ArgParser("aoin")
+    Tuning.runTuning()
 
-    parser.subcommands(Reference(), Genetic())
-    parser.parse(args)
+//    val parser = ArgParser("aoin")
+//
+//    parser.subcommands(Reference(), Genetic())
+//    parser.parse(args)
 }
 
 @OptIn(ExperimentalCli::class)
