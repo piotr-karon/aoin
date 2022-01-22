@@ -9,3 +9,8 @@ fun requirePositiveInt(value: Int, fieldName: String, lineNumber: Int? = null): 
     require(value > 0) { "$fieldName (value=$value) must be greater than 0. ${lineNumber?.let { "Line $it" }}" }
     return value
 }
+
+fun requirePositiveOrZeroInt(value: Int, fieldName: String, lineNumber: Int? = null): Int {
+    require(value >= 0) { "$fieldName (value=$value) must be greater or equal than 0. ${lineNumber?.let { "Line $it" }}" }
+    return value
+}

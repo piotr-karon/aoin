@@ -8,6 +8,7 @@ class Population: Iterable<Chromosome> {
         val range = (size/2 until size)
         val random = (0 until number).map { range.random() }.toSet()
 
+        chromosomes.firstEntry()
         return asSequence()
             .filterIndexed { index, _ -> index in random }
             .toList()
